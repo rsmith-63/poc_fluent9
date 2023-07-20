@@ -1,0 +1,49 @@
+.form-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+
+  }
+  .checkbox {
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+  }
+  .spacing {
+    justify-content: space-between;
+  }
+  
+  .column {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .input-move-right {
+    transform: translateX(400px);
+  }
+  
+  .column {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .text-input {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .input-container {
+    position: relative;
+  }
+  
+  
+  .button {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  
+  
