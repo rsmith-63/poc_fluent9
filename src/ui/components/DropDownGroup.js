@@ -53,7 +53,7 @@ export const DropDownGroup = (props) => {
   let currentIndex = options.length - 1;
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [optionValues, setOptionValues] = useState([]);
-  
+  const [isDisabled, setIsDisabled] = useState([false, true, true]);
   const UpdateSelectedOptions= (index, newValue) => {
     const newArray = [...selectedOptions];
     newArray[index] = newValue;
@@ -65,16 +65,14 @@ export const DropDownGroup = (props) => {
     setOptionValues(newArray);
   };
   
-
-  const onOptionSelect = (ev, data) => {
-    
-    const result =  findOption(options, data.optionText);
+    const onOptionSelect = (ev, data) => {
+    const result = findOption(options, data.optionText);
 
     console.log(` result ${JSON.stringify(result)}`);
+
+    setIsDisabled([false, false, false]);
     updateValues(result.outerIndex, data.optionText);
     UpdateSelectedOptions(result.outerIndex, data.selectedOptions);
-
-    
   };
   
   const getOptionList = (options) => {
@@ -112,7 +110,8 @@ export const DropDownGroup = (props) => {
             props,
             optionsArray,
             dropdownId,
-            dropdownRef
+            dropdownRef,
+            isDisabled
           );
         })}
         <IconButton
@@ -141,9 +140,14 @@ function createDropdown(
   props,
   optionsArray,
   dropdownId,
-  dropdownRef
+  dropdownRef,
+  isDisabled
 ) {
-  
+  // these are the default values for the dropdown they 
+  //will use the history context to update
+  const defaultSelectedOption = "Option 1";
+  const defaultselectedOptions = ["Option 1"];
+
   
   return (
    
@@ -153,8 +157,9 @@ function createDropdown(
       id={`${index}`}
       ref={dropdownRef}
       onOptionSelect={onOptionSelect}
-      selectedOptions={selectedOptions[index]}
-      value={optionValues[index]}
+      selectedOptions={selectedOptions[index] || defaultselectedOptions}
+      value={optionValues[index] || defaultSelectedOption}
+      disabled={isDisabled[index]}
       {...props}
     >
       {optionsArray}

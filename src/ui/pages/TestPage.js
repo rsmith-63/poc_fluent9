@@ -53,7 +53,7 @@ export const TestPage = () => {
   return (
     <FluentProvider theme={webLightTheme}>
     <div>
-      <h1>Test Page New Styling</h1>
+      <h1>Test Page New Styling POC</h1>
       <div>
       <ButtonDialog title="Select AI Observations" >
           <DropDownGroup  />

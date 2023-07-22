@@ -16,7 +16,7 @@ export default function App() {
         <hr />
         <ul>
           <li>
-            <Link to='/TestPageNewStying'>Test Page New Styling </Link>
+            <Link to='/TestPageNewStying'>Test Page New Styling POC </Link>
           </li>
         </ul>
         <Routes>
