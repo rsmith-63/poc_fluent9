@@ -10,7 +10,7 @@ import {
   RowDataContext,
   DeleteRowContext,
   AddRowContext,
-  //HistoryContext,
+  HistoryContext,
 } from "../context/DiaglogContext";
 
 const useStyles = makeStyles({
@@ -32,7 +32,7 @@ export const DropDownGroup = (props) => {
   const handleAdd = useContext(AddRowContext);
   const dropdownRef = useRef(null);
   
-  //const handleHistory = useContext(HistoryContext);
+  const {handleHistory,history} = useContext(HistoryContext);
 
   
   const findOption = (options, word) => {
@@ -70,9 +70,17 @@ export const DropDownGroup = (props) => {
 
     console.log(` result ${JSON.stringify(result)}`);
 
-    setIsDisabled([false, false, false]);
+    
     updateValues(result.outerIndex, data.optionText);
     UpdateSelectedOptions(result.outerIndex, data.selectedOptions);
+    const historyObject = {
+      defaultselectedOptions: data.selectedOptions,
+      defaultSelectedOption: data.optionText,
+      dropdownId: result.outerIndex,
+    };
+    handleHistory(result.outerIndex,historyObject);
+    setIsDisabled([false, false, false]);
+  
   };
   
   const getOptionList = (options) => {
@@ -89,7 +97,7 @@ export const DropDownGroup = (props) => {
     
   };
 
-  console.log(` option Value from state ${optionValues}`);
+  //console.log(` option Value from state ${optionValues}`);
 
   return (
     <>
@@ -99,7 +107,7 @@ export const DropDownGroup = (props) => {
           
           
           const optionsArray = getOptionList(option);
-          logData(option, index);
+          //logData(option, index);
 
           return createDropdown(
             classes,
@@ -111,7 +119,8 @@ export const DropDownGroup = (props) => {
             optionsArray,
             dropdownId,
             dropdownRef,
-            isDisabled
+            isDisabled,
+            history
           );
         })}
         <IconButton
@@ -141,12 +150,16 @@ function createDropdown(
   optionsArray,
   dropdownId,
   dropdownRef,
-  isDisabled
+  isDisabled,
+  history
 ) {
   // these are the default values for the dropdown they 
-  //will use the history context to update
-  const defaultSelectedOption = "Option 1";
-  const defaultselectedOptions = ["Option 1"];
+  //will use the history from context to update
+  console.log(` history Value from button dialog ${JSON.stringify(history)}`);
+
+  const defaultSelectedOption = history[index].defaultSelectedOption;
+  const defaultselectedOptions = history[index].defaultselectedOptions;
+
 
   
   return (

@@ -41,6 +41,9 @@ const options = [
 export const ButtonDialog = ({ title, children }) => {
   const classes = buttonDialogStyles();
   const [open, setOpen] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState(options);
+  const [history, setHistory] = useState([]);
+  
 
   const handleDelete = (index) => {
     console.log(` handleDelete options ${JSON.stringify(selectedOptions)} index ${index}`)
@@ -58,26 +61,19 @@ export const ButtonDialog = ({ title, children }) => {
     console.log(` handleAdd end selectedOptions ${JSON.stringify(selectedOptions)} index ${index}`)
   };
 
-  const handleOptionSelect = (option, index) => {
-    setSelectedOptions((selectedOptions) => [...selectedOptions, option]);
-    console.log(
-      ` start handleOptionSelect options
-       ${JSON.stringify(historyOptions)} 
-       index ${index}`);  
-    setHistoryOptions((historyOptions) => [
-      ...historyOptions,
-      { index, option },
-    ]);
-    console.log(
-      ` end handleOptionSelect options
-       ${JSON.stringify(historyOptions)} 
-       index ${index}`);
-  };
-
+  const handleHistoryUpdate= (dropdownId, newValue) => {
+    const newArray = [...history];
+    newArray[dropdownId] = newValue;
+    setHistory(newArray);
+  }
+  
+const historyObject = {
+  handleHistory: handleHistoryUpdate,
+  history: history,
+};
   
 
-  const [selectedOptions, setSelectedOptions] = useState(options);
-  const [historyOptions, setHistoryOptions] = useState([]);
+
   
   return (
     <Dialog open={open} onOpenChange={(event, data) => setOpen(data.open)}>
@@ -89,7 +85,7 @@ export const ButtonDialog = ({ title, children }) => {
           <DialogTitle>{title}</DialogTitle>
           <DialogContent className={classes.buttonDialog__content}>
             <>
-              <HistoryContext.Provider value={handleOptionSelect}>
+              <HistoryContext.Provider value={historyObject}>
               <RowDataContext.Provider value={selectedOptions}>
                 <DeleteRowContext.Provider value={handleDelete}>
                   <AddRowContext.Provider value={handleAdd}>
