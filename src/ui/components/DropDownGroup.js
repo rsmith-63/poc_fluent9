@@ -39,12 +39,12 @@ export const DropDownGroup = (props) => {
     let outerIndex = -1;
     let innerIndex = -1;
   
-    outerIndex = options.findIndex((innerArray) =>
+    outerIndex = options?.findIndex((innerArray) =>
       innerArray.some((option) => option.text === word)
     );
   
     if (outerIndex !== -1) {
-      innerIndex = options[outerIndex].findIndex((option) => option.text === word);
+      innerIndex = options[outerIndex]?.findIndex((option) => option.text === word);
     }
   
     return { outerIndex, innerIndex };
@@ -88,14 +88,14 @@ export const DropDownGroup = (props) => {
       return <Option key={option.key}>{option.text}</Option>;
     });
   };
-  const logData = (option, index) => {
-    console.log(` 
-    option we are working with passed in from dialog
-     ${JSON.stringify(option)}  
-     index we are working from options.map 
-     ${index}`);
+  // const logData = (option, index) => {
+  //   console.log(` 
+  //   option we are working with passed in from dialog
+  //    ${JSON.stringify(option)}  
+  //    index we are working from options.map 
+  //    ${index}`);
     
-  };
+  // };
 
   //console.log(` option Value from state ${optionValues}`);
 
@@ -157,8 +157,8 @@ function createDropdown(
   //will use the history from context to update
   console.log(` history Value from button dialog ${JSON.stringify(history)}`);
 
-  const defaultSelectedOption = history[index].defaultSelectedOption;
-  const defaultselectedOptions = history[index].defaultselectedOptions;
+  const defaultSelectedOption = history[index]?.defaultSelectedOption;
+  const defaultselectedOptions = history[index]?.defaultselectedOptions;
 
 
   

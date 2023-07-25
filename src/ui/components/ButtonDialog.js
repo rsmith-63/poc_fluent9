@@ -9,7 +9,8 @@ import {
   Button,
   Divider,
 } from "@fluentui/react-components";
-
+import{options, data, newRow} from "./TestData/ButtonDialog_testData";
+//inport { options, rowdata, newRow } from "./TestData/ButtonDialog_testData";
 import { useState } from "react";
 
 import { buttonDialogStyles } from "../styles/ButtonDialogStyles";
@@ -20,45 +21,48 @@ import {
   HistoryContext
 } from "../context/DiaglogContext";
 
-const options = [
-  [
-    { key: "1", text: "Option 1 first set" },
-    { key: "2", text: "Option 2" },
-    { key: "3", text: "Option 3" },
-  ],
-  [
-    { key: "4", text: "Option 4 second set" },
-    { key: "5", text: "Option 5" },
-    { key: "6", text: "Option 6" },
-  ],
-  [
-    { key: "7", text: "Option 7 third set" },
-    { key: "8", text: "Option 8" },
-    { key: "9", text: "Option 9" },
-  ],
-];
+
+const getOptionsByRow = (rowId) => {
+  const row = data.find((item) => item.rowId === rowId);
+  return row ? row.options : [];
+};
+
+const updateOptionsByRow = (rowId, newOptions) => {
+  const index = data.findIndex((item) => item.rowId === rowId);
+  if (index !== -1) {
+    data[index].rowId = newOptions.rowId;
+    data[index].options = newOptions;
+    
+
+  }
+};
+
+
 
 export const ButtonDialog = ({ title, children }) => {
   const classes = buttonDialogStyles();
   const [open, setOpen] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState(options);
+  const [rowId, setRowId] = useState(0);
+ 
+  const [selectedOptions, setSelectedOptions] = useState(data[rowId].options);
   const [history, setHistory] = useState([]);
+   const nextRow = getOptionsByRow(1);
+   console.log(`nextRow ${JSON.stringify(nextRow)}`);
+   updateOptionsByRow(1, options[0]);
+   console.log(` updateOptionsByRow data ${JSON.stringify(data)}`);
   
-
   const handleDelete = (index) => {
-    console.log(` handleDelete options ${JSON.stringify(selectedOptions)} index ${index}`)
+    
     setSelectedOptions((selectedOptions) =>
       selectedOptions.filter((_, i) => i !== index)
     );
-    console.log(`handleDelete end selectedOptions ${JSON.stringify(selectedOptions)} index ${index}`)
+    
   };
 
   const handleAdd = (index) => {
-    console.log(` handleAdd options 
-    ${JSON.stringify(selectedOptions)} 
-    index ${index}`)
+    
     setSelectedOptions((selectedOptions) => [...selectedOptions, options[index]]);
-    console.log(` handleAdd end selectedOptions ${JSON.stringify(selectedOptions)} index ${index}`)
+    
   };
 
   const handleHistoryUpdate= (dropdownId, newValue) => {
