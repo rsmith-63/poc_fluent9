@@ -27,19 +27,6 @@ console.log(`  data ${JSON.stringify(newData)}`);
 console.log(`  newRow ${JSON.stringify(newRow)}`);
 console.log(`  options ${JSON.stringify(options)}`);
 
-//const newData = data;
-// const getOptionsByRow = (rowId) => {
-//   const row = newData.find((item) => item.rowId === rowId);
-//   return row ? row.options : [];
-// };
-
-// const updateOptionsByRow = (rowId, newOptions) => {
-//   const index = newData.findIndex((item) => item.rowId === rowId);
-//   if (index !== -1) {
-//     newData[index].rowId = newOptions.rowId;
-//     newData[index].options = newOptions;
-//   }
-// };
 
 export const ButtonDialog = ({ title, children }) => {
   const classes = buttonDialogStyles();
@@ -55,12 +42,7 @@ export const ButtonDialog = ({ title, children }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [history, setHistory] = useState([]);
 
-  //const nextRow = getOptionsByRow(1);
-  //console.log(`nextRow ${JSON.stringify(nextRow)}`);
-
-  //updateOptionsByRow(1, options[0]);
-  //console.log(` updateOptionsByRow data ${JSON.stringify(data)}`);
-
+  
   console.log(` befor updateData data ${JSON.stringify(data)}`);
   const updateData = (rowId, newOptions, newRow) => {
     setData((prevData) => {
@@ -74,9 +56,7 @@ export const ButtonDialog = ({ title, children }) => {
       }
     });
   };
-  //updateData(3, getOptionsByRow(3), newRow);
-  //console.log(` updateData data ${JSON.stringify(data)}`);
-
+  
   const handleDelete = (index) => {
     setSelectedOptions((selectedOptions) =>
       selectedOptions.filter((_, i) => i !== index)
