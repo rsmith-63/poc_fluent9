@@ -32,6 +32,7 @@ export const DropDownGroup = (props) => {
   const handleAdd = useContext(AddRowContext);
   const dropdownRef = useRef(null);
   
+  
   const {handleHistory,history} = useContext(HistoryContext);
 
   
@@ -50,10 +51,13 @@ export const DropDownGroup = (props) => {
     return { outerIndex, innerIndex };
   };
   
+
+
   let currentIndex = options.length - 1;
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [optionValues, setOptionValues] = useState([]);
   const [isDisabled, setIsDisabled] = useState([false, true, true]);
+  
   const UpdateSelectedOptions= (index, newValue) => {
     const newArray = [...selectedOptions];
     newArray[index] = newValue;
@@ -66,7 +70,7 @@ export const DropDownGroup = (props) => {
   };
   
     const onOptionSelect = (ev, data) => {
-    const result = findOption(options, data.optionText);
+    const result = findOption(options.options, data.optionText);
 
     console.log(` result ${JSON.stringify(result)}`);
 
@@ -82,27 +86,20 @@ export const DropDownGroup = (props) => {
     setIsDisabled([false, false, false]);
   
   };
+
   
-  const getOptionList = (options) => {
+    const getOptionList = (options) => {
+
     return options?.map((option) => {
       return <Option key={option.key}>{option.text}</Option>;
     });
   };
-  // const logData = (option, index) => {
-  //   console.log(` 
-  //   option we are working with passed in from dialog
-  //    ${JSON.stringify(option)}  
-  //    index we are working from options.map 
-  //    ${index}`);
-    
-  // };
-
-  //console.log(` option Value from state ${optionValues}`);
-
+  
+ const currentRowOptions  = options.options;
   return (
     <>
       <div className={classes.container}>
-        {options.map((option, index) => {
+        {currentRowOptions.map((option, index) => {
           currentIndex = index;
           
           

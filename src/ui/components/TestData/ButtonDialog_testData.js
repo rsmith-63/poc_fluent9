@@ -65,48 +65,48 @@ export const   data =[
           ]
         },
         {
-          "rowId": 2,
+          "rowId": 1,
           "options": [
             [
               {
                 "key": "1",
-                "text": "Option row2 1"
+                "text": "Option row 1 1"
               },
               {
                 "key": "2",
-                "text": "Option row2 2"
+                "text": "Option row 1 2"
               },
               {
                 "key": "3",
-                "text": "Option row2 3"
+                "text": "Option row 1 3"
               }
             ],
             [
               {
                 "key": "4",
-                "text": "Option  row2 4"
+                "text": "Option  row 1 4"
               },
               {
                 "key": "5",
-                "text": "Option row2 5"
+                "text": "Option row 1 5"
               },
               {
                 "key": "6",
-                "text": "Option row2 6"
+                "text": "Option row 1 6"
               }
             ],
             [
               {
                 "key": "7",
-                "text": "Option  row2 7"
+                "text": "Option  row 1` 7"
               },
               {
                 "key": "8",
-                "text": "Option  row2 8"
+                "text": "Option  row 1 8"
               },
               {
                 "key": "9",
-                "text": "Option row 2 9"
+                "text": "Option row 1 9"
               }
             ]
           ]
@@ -114,48 +114,48 @@ export const   data =[
       ]
 
 export const  newRow = {
-    "rowId": 3,
+    "rowId": 2,
     "options": [
       [
         {
           "key": "1",
-          "text": "Option row3 1"
+          "text": "Option row 2 1"
         },
         {
           "key": "2",
-          "text": "Option row3 2"
+          "text": "Option row 2 2"
         },
         {
           "key": "3",
-          "text": "Option row3 3"
+          "text": "Option row 2 3"
         }
       ],
       [
         {
           "key": "4",
-          "text": "Option  row2 4"
+          "text": "Option  row 2 4"
         },
         {
           "key": "5",
-          "text": "Option row3 5"
+          "text": "Option row 2 5"
         },
         {
           "key": "6",
-          "text": "Option row3 6"
+          "text": "Option row 2 6"
         }
       ],
       [
         {
           "key": "7",
-          "text": "Option  row3 7"
+          "text": "Option  row 2 7"
         },
         {
           "key": "8",
-          "text": "Option  row3 8"
+          "text": "Option  row 2 8"
         },
         {
           "key": "9",
-          "text": "Option row 3 9"
+          "text": "Option row 2 9"
         }
       ]
     ]
