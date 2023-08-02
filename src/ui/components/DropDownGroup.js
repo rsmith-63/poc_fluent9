@@ -30,7 +30,6 @@ export const DropDownGroup = (props) => {
   const options = useContext(RowDataContext);
   const onDelete = useContext(DeleteRowContext);
   const handleAdd = useContext(AddRowContext);
-  const dropdownRef = useRef(null);
   
   
   const {handleHistory,history} = useContext(HistoryContext);
@@ -115,7 +114,6 @@ export const DropDownGroup = (props) => {
             props,
             optionsArray,
             dropdownId,
-            dropdownRef,
             isDisabled,
             history
           );
@@ -146,7 +144,6 @@ function createDropdown(
   props,
   optionsArray,
   dropdownId,
-  dropdownRef,
   isDisabled,
   history
 ) {
@@ -165,7 +162,6 @@ function createDropdown(
       key={`${dropdownId}-${index}`}
       className={classes.dropdown}
       id={`${index}`}
-      ref={dropdownRef}
       onOptionSelect={onOptionSelect}
       selectedOptions={selectedOptions[index] || defaultselectedOptions}
       value={optionValues[index] || defaultSelectedOption}

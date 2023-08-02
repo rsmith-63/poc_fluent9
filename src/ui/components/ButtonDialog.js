@@ -10,7 +10,7 @@ import {
   Divider,
 } from "@fluentui/react-components";
 
-import { useState,useEffect } from "react";
+import { useState,useEffect,useRef } from "react";
 
 import { buttonDialogStyles } from "../styles/ButtonDialogStyles";
 import {
@@ -19,57 +19,52 @@ import {
   AddRowContext,
   HistoryContext,
 } from "../context/DiaglogContext";
-import { options, newRow } from "./TestData/ButtonDialog_testData";
+import { newRow } from "./TestData/ButtonDialog_testData";
 import { data as newData } from "./TestData/ButtonDialog_testData";
 
 
 console.log(`  data ${JSON.stringify(newData)}`);
 console.log(`  newRow ${JSON.stringify(newRow)}`);
-console.log(`  options ${JSON.stringify(options)}`);
 
 
 export const ButtonDialog = ({ title, children }) => {
   const classes = buttonDialogStyles();
   const [open, setOpen] = useState(false);
-  const [rowId, setRowId] = useState(0);
   const [data, setData] = useState([]);
+  const rowIdRef = useRef(0);
 
   useEffect(() => {
     setData(newData);
-    setSelectedOptions(options);
+    
   }, [])
 
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [history, setHistory] = useState([]);
+  
+  
+    const [history, setHistory] = useState([]);
 
   
   console.log(` befor updateData data ${JSON.stringify(data)}`);
-  const updateData = (rowId, newOptions, newRow) => {
-    setData((prevData) => {
-      const index = prevData.findIndex((item) => item.rowId === rowId);
-      if (index !== -1) {
-        const newData = [...prevData];
-        newData[index].options = newOptions;
-        return newData;
-      } else {
-        return prevData.concat(newRow);
-      }
-    });
+  
+  
+  const handleDelete = (index,rowID) => {
+    // setSelectedOptions((selectedOptions) =>
+    //   selectedOptions.filter((_, i) => i !== index)
+    // );
+  };
+
+  const handleAdd = (index, rowID) => {
+    // Increment the value of rowIdRef
+    rowIdRef.current += 1;
+  
+    // Use rowId to get the correct object from the data array
+    const selectedRow = data.find((row) => row.rowId === rowIdRef.current);
+  
+     //Set the selected options to the options of the selected row
+
+    const newArray = [...data];
+     setData(newArray);
   };
   
-  const handleDelete = (index) => {
-    setSelectedOptions((selectedOptions) =>
-      selectedOptions.filter((_, i) => i !== index)
-    );
-  };
-
-  const handleAdd = (index) => {
-    setSelectedOptions((selectedOptions) => [
-      ...selectedOptions,
-      options[index],
-    ]);
-  };
-
   const handleHistoryUpdate = (dropdownId, newValue) => {
     const newArray = [...history];
     newArray[dropdownId] = newValue;
@@ -92,7 +87,7 @@ export const ButtonDialog = ({ title, children }) => {
           <DialogContent className={classes.buttonDialog__content}>
             <>
               <HistoryContext.Provider value={historyObject}>
-                <RowDataContext.Provider value={data[rowId]}>
+                <RowDataContext.Provider value={data[rowIdRef.current]}>
                   <DeleteRowContext.Provider value={handleDelete}>
                     <AddRowContext.Provider value={handleAdd}>
                       {children}
