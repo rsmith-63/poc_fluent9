@@ -18,6 +18,7 @@ import {
   DeleteRowContext,
   AddRowContext,
   HistoryContext,
+  DropDownListContext,
 } from "../context/DiaglogContext";
 import { newRow } from "./TestData/ButtonDialog_testData";
 import { data as newData } from "./TestData/ButtonDialog_testData";
@@ -31,6 +32,7 @@ export const ButtonDialog = ({ title, children }) => {
   const classes = buttonDialogStyles();
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
+  const [dropdowns, setDropdowns] = useState([])
   const rowIdRef = useRef(0);
 
   useEffect(() => {
@@ -42,8 +44,11 @@ export const ButtonDialog = ({ title, children }) => {
   
     const [history, setHistory] = useState([]);
 
-  
-  console.log(` befor updateData data ${JSON.stringify(data)}`);
+    function handleCreateDropdowns(newDropdowns) {
+     
+      setDropdowns([...dropdowns, ...(newDropdowns ?? [])]);
+    }
+  console.log(` after handleCreateDropdowns dropdowns list ${JSON.stringify(dropdowns)}`);
   
   
   const handleDelete = (index,rowID) => {
@@ -52,17 +57,28 @@ export const ButtonDialog = ({ title, children }) => {
     // );
   };
 
-  const handleAdd = (index, rowID) => {
-    // Increment the value of rowIdRef
-    rowIdRef.current += 1;
+  const handleAdd = () => {
+    
+    
   
     // Use rowId to get the correct object from the data array
-    const selectedRow = data.find((row) => row.rowId === rowIdRef.current);
+    //const selectedRow = data.find((row) => row.rowId === rowIdRef.current);
   
      //Set the selected options to the options of the selected row
 
     const newArray = [...data];
-     setData(newArray);
+
+    
+     // Increment the value of rowIdRef
+     if(rowIdRef.current < data.length){
+      rowIdRef.current = rowIdRef.current + 1;
+     }
+      else{
+        rowIdRef.current = 0;
+      }
+      setData(newArray);
+
+   
   };
   
   const handleHistoryUpdate = (dropdownId, newValue) => {
@@ -75,6 +91,11 @@ export const ButtonDialog = ({ title, children }) => {
     handleHistory: handleHistoryUpdate,
     history: history,
   };
+  const DropDownList = {
+    dropdowns: dropdowns,
+    handleCreateDropdowns: handleCreateDropdowns,
+
+  }
 
   return (
     <Dialog open={open} onOpenChange={(event, data) => setOpen(data.open)}>
@@ -86,6 +107,7 @@ export const ButtonDialog = ({ title, children }) => {
           <DialogTitle>{title}</DialogTitle>
           <DialogContent className={classes.buttonDialog__content}>
             <>
+            <DropDownListContext.Provider value={DropDownList}>
               <HistoryContext.Provider value={historyObject}>
                 <RowDataContext.Provider value={data[rowIdRef.current]}>
                   <DeleteRowContext.Provider value={handleDelete}>
@@ -95,6 +117,7 @@ export const ButtonDialog = ({ title, children }) => {
                   </DeleteRowContext.Provider>
                 </RowDataContext.Provider>
               </HistoryContext.Provider>
+            </DropDownListContext.Provider>
             </>
             <Divider appearance="strong" />
           </DialogContent>

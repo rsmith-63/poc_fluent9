@@ -4,13 +4,15 @@ import { makeStyles } from "@fluentui/react-components";
 import { IconButton } from "./IconButton";
 import { Delete24Filled } from "@fluentui/react-icons";
 import { AddCircleFilled } from "@fluentui/react-icons";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, } from "react";
+
 
 import {
   RowDataContext,
   DeleteRowContext,
   AddRowContext,
   HistoryContext,
+  DropDownListContext,
 } from "../context/DiaglogContext";
 
 const useStyles = makeStyles({
@@ -32,6 +34,7 @@ export const DropDownGroup = (props) => {
   const handleAdd = useContext(AddRowContext);
 
   const { handleHistory, history } = useContext(HistoryContext);
+  const { handleCreateDropdowns, dropdowns } = useContext(DropDownListContext);
 
   
   const findOption = (options, word) => {
@@ -51,11 +54,11 @@ export const DropDownGroup = (props) => {
     return { outerIndex, innerIndex };
   };
 
-  let currentIndex = options.length - 1;
+  let currentIndex = options?.length - 1;
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [optionValues, setOptionValues] = useState([]);
   const [isDisabled, setIsDisabled] = useState([false, true, true]);
-  const [dropdowns, setDropdowns] = useState([]);
+
   const UpdateSelectedOptions = (index, newValue) => {
     const newArray = [...selectedOptions];
     newArray[index] = newValue;
@@ -89,7 +92,7 @@ export const DropDownGroup = (props) => {
     });
   };
   function createDropdowns() {
-    const dropdownComponents = currentRowOptions.map((option, index) => {
+    const dropdownComponents = currentRowOptions?.map((option, index) => {
       const optionsArray = getOptionList(option);
       const dropdown = createDropdown(
         classes,
@@ -107,13 +110,17 @@ export const DropDownGroup = (props) => {
     });
     return dropdownComponents;
   }
-  const currentRowOptions = options.options;
+  const currentRowOptions = options?.options;
 
-  useEffect(() => {
+  
+
+  function onAdd(currentIndex) {
+    
     const newDropdowns = createDropdowns();
-    setDropdowns(newDropdowns);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDisabled,history]);
+    
+    handleAdd();
+    handleCreateDropdowns(newDropdowns);
+  }
 
   return (
     <>
@@ -131,7 +138,7 @@ export const DropDownGroup = (props) => {
         <IconButton
           iconVal={<AddCircleFilled />}
           Tooltiptext="Add AI Observations"
-          click={() => handleAdd(currentIndex)}
+          click={() => onAdd()}
         />
       </div>
     </>
@@ -158,7 +165,7 @@ function createDropdown(
 
   return (
     <Dropdown
-      key={`${dropdownId}-${index}`}
+      key={`${dropdownId}-${index}-${Date.now()}`}
       className={classes.dropdown}
       id={`${index}`}
       onOptionSelect={onOptionSelect}
