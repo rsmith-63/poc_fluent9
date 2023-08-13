@@ -4,7 +4,7 @@ import { makeStyles } from "@fluentui/react-components";
 import { IconButton } from "./IconButton";
 import { Delete24Filled } from "@fluentui/react-icons";
 import { AddCircleFilled } from "@fluentui/react-icons";
-import { useContext, useState, } from "react";
+import { useContext, useState,useEffect,useRef } from "react";
 
 
 import {
@@ -32,10 +32,12 @@ export const DropDownGroup = (props) => {
   const options = useContext(RowDataContext);
   const onDelete = useContext(DeleteRowContext);
   const handleAdd = useContext(AddRowContext);
+  
+  const refs = useRef([]);
 
   const { handleHistory, history } = useContext(HistoryContext);
-  const { handleCreateDropdowns, dropdowns } = useContext(DropDownListContext);
-
+  const { handleCreateDropdowns, dropdowns,update } = useContext(DropDownListContext);
+  const [dropdownlist, setDropdowns] = useState([dropdowns]);
   
   const findOption = (options, word) => {
     let outerIndex = -1;
@@ -70,6 +72,14 @@ export const DropDownGroup = (props) => {
     setOptionValues(newArray);
   };
 
+  
+// useEffect(() => {
+//     setIsDisabled(isDisabled);
+//     //handleHistory(history);
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [isDisabled,history,dropdowns]);  
+  
+
   const onOptionSelect = (ev, data) => {
     const result = findOption(options.options, data.optionText);
 
@@ -77,12 +87,20 @@ export const DropDownGroup = (props) => {
 
     updateValues(result.outerIndex, data.optionText);
     UpdateSelectedOptions(result.outerIndex, data.selectedOptions);
-    const historyObject = {
-      defaultselectedOptions: data.selectedOptions,
-      defaultSelectedOption: data.optionText,
-      dropdownId: result.outerIndex,
-    };
-    handleHistory(result.outerIndex, historyObject);
+    // const historyObject = {
+    //   defaultselectedOptions: data.selectedOptions,
+    //   defaultSelectedOption: data.optionText,
+    //   dropdownId: result.outerIndex,
+    // };
+    //handleHistory(result.outerIndex, historyObject);
+    
+    //update(refs.current[result.outerIndex], data.optionText);
+    refs.current[result.outerIndex].value = data.optionText;
+    //set disabled to false for all drop downs dropdown
+    refs.current[result.outerIndex].disabled = false
+    console.log(`refs.current[result.outerIndex] ${refs.current[result.outerIndex]}`);
+    console.log('dropdownList selected dropdown',dropdownlist[result.outerIndex]);
+    //handleCreateDropdowns(dropdowns);
     setIsDisabled([false, false, false]); //not working afer first selection
   };
 
@@ -104,7 +122,8 @@ export const DropDownGroup = (props) => {
         optionsArray,
         dropdownId,
         isDisabled,
-        history
+        history,
+        refs
       );
       return dropdown;
     });
@@ -154,7 +173,8 @@ function createDropdown(
   optionsArray,
   dropdownId,
   isDisabled,
-  history
+  history,
+  refs
 ) {
   // these are the default values for the dropdown they
   //will use the history from context to update
@@ -162,19 +182,21 @@ function createDropdown(
 
   const defaultSelectedOption = history[index]?.defaultSelectedOption;
   const defaultselectedOptions = history[index]?.defaultselectedOptions;
-
+  
   return (
     <Dropdown
       key={`${dropdownId}-${index}-${Date.now()}`}
       className={classes.dropdown}
       id={`${index}`}
       onOptionSelect={onOptionSelect}
-      selectedOptions={selectedOptions[index] || defaultselectedOptions}
+      //selectedOptions={selectedOptions[index] || defaultselectedOptions}
       value={optionValues[index] || defaultSelectedOption}
       disabled={isDisabled[index]}
+      ref={el => refs.current[index] = el}
       {...props}
     >
       {optionsArray}
     </Dropdown>
+    
   );
 }

@@ -40,15 +40,22 @@ export const ButtonDialog = ({ title, children }) => {
     
   }, [])
 
+  useEffect(() => {
+    console.log(`   dropdowns list  updated ${JSON.stringify(dropdowns)}`);
+  
+    
+  }, [dropdowns])
+
   
   
     const [history, setHistory] = useState([]);
 
     function handleCreateDropdowns(newDropdowns) {
-     
-      setDropdowns([...dropdowns, ...(newDropdowns ?? [])]);
+      if(newDropdowns){
+      setDropdowns([...dropdowns, ...newDropdowns]);
+      }
     }
-  console.log(` after handleCreateDropdowns dropdowns list ${JSON.stringify(dropdowns)}`);
+ // console.log(` after handleCreateDropdowns dropdowns list ${JSON.stringify(dropdowns)}`);
   
   
   const handleDelete = (index,rowID) => {
@@ -91,11 +98,28 @@ export const ButtonDialog = ({ title, children }) => {
     handleHistory: handleHistoryUpdate,
     history: history,
   };
+
+  function dropdownById(ref,value) {
+    ref.value = value;
+    //console.log(` after dropdownById dropdowns list ${JSON.stringify(dropdowns)}`);
+  
+    // const updatedDropdowns = dropdowns.map((dropdown) => {
+    //   if (dropdown.props.id == id) {
+    //     return dropdown;
+    //   } else {
+    //     return dropdown;
+    //   }
+    // });
+    // setDropdowns(updatedDropdowns);
+  }
   const DropDownList = {
     dropdowns: dropdowns,
     handleCreateDropdowns: handleCreateDropdowns,
+    update : dropdownById,
 
   }
+
+  
 
   return (
     <Dialog open={open} onOpenChange={(event, data) => setOpen(data.open)}>
